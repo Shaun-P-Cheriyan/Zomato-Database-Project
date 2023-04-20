@@ -1,0 +1,76 @@
+create table countrycode (
+    countryCode integer primary key ,
+    country varchar(300)
+);
+
+
+create table currency(
+    currency VARCHAR(300) unique,
+    date VARCHAR(300),
+    currencyValue REAL not NULL,
+    primary key(currency , date),
+);
+
+create table pricerange(
+    averageCostForTwo integer,
+    currency varchar(300) FOREIGN key REFERENCES currency(currency) on delete cascade,
+    priceRange integer
+    primary key(averageCostForTwo , currency)
+);
+
+create table rating(
+    aggregateRating Real primary key,
+    ratingColor varchar(300),
+    ratingText varchar(300)
+);
+
+create table address(
+    address varchar(300) primary key,
+    countryCode INTEGER FOREIGN key REFERENCES countrycode on delete cascade,
+    city varchar(300),
+    locality varchar(300),
+    localityVerbose varchar(300)
+
+);
+
+create table restaurant (
+    restaurantID integer PRIMARY KEY,
+    restaurantName varchar(300) not null,
+    address varchar(300) foreign key references address on delete cascade,
+    averageCostForTwo integer,
+    hasTableBooking varchar(300), 
+    hasOnlineDelivery varchar(300),
+    isDeliveringNow varchar(300),
+    switchToOrderMenu varchar(300),
+    aggregateRating Real foreign key REFERENCES rating on delete cascade,
+    votes INTEGER
+);
+
+create table cuisine(
+    restaurantID INTEGER foreign KEY REFERENCES restaurant  on DELETE CASCADE,
+    cuisineName VARCHAR(300),
+    primary key(restaurantID , cuisineName)
+);
+
+create table happinessInfo(
+    happinessScore Real PRIMARY key,
+    happinessRank integer
+
+
+);
+
+create table continent(
+    continent VARCHAR(300) PRIMARY KEY,
+    area INTEGER 
+    
+    );
+
+create table country( 
+    country VARCHAR(300) PRIMARY KEY,
+    currency varchar(300),
+    population integer,
+    date varchar(300) ,
+    continent varchar(300) foreign key references continent on delete cascade,
+    happinessScore Real FOREIGN key REFERENCES happinessInfo on delete cascade,
+    foreign key (currency , date) REFERENCES currency (currency , date) on DELETE CASCADE 
+);
